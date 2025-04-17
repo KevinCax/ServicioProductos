@@ -1,22 +1,23 @@
-package com.producto.servicioProducto.model;
+package com.producto.servicioProducto.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data @NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
-public class Product {
+@NoArgsConstructor
+public class ProductDto {
+
     @Id
-    private Long id;
-    private String name;
-    private String description;
-    private double price;
+    private Integer id;
+    private String nombre;
+    private String descripcion;
+    private double precio;
     private Integer stock;
 }
-
