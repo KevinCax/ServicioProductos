@@ -18,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final ProductService service;
 
     // Obtener todos los productos
     @GetMapping
@@ -80,20 +81,22 @@ public class ProductController {
 
     // Actualizar solo el stock de un producto
     @PatchMapping("/stock/{id}")
-    public ResponseEntity<Map<String, String>> updateStock(
+    public ResponseEntity<Map<String,String>> updateStock(
             @PathVariable Long id,
-            @RequestBody Map<String, Integer> payload) {
-        Integer quantity = payload.get("stock");
-        if (quantity == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Campo 'stock' es obligatorio");
+            @RequestBody Map<String,Integer> payload) {
+
+        Integer newStock = payload.get("stock");
+        if (newStock == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Campo 'stock' es obligatorio");
         }
-        try {
-            productService.updateStock(id, quantity);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Stock del producto con id " + id + " actualizado a " + quantity);
-            return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
-        }
+
+        service.updateStock(id, newStock);
+
+        Map<String,String> resp = new HashMap<>();
+        resp.put("message", "Stock del producto con id " + id +
+                " actualizado a " + newStock);
+
+        return ResponseEntity.ok(resp);
     }
 }
